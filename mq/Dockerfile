@@ -1,4 +1,4 @@
-FROM rabbitmq:3.8.7
+FROM rabbitmq:3.8.7-management
 
 RUN apt-get update
 RUN apt-get install -y curl
