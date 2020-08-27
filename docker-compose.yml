@@ -1,0 +1,57 @@
+version: '3.5'
+
+services:
+ mq:
+  build: mq
+  container_name: mq
+  hostname: mq
+  ports:
+   - "5672:5672"
+   - "15672:15672"
+  expose:
+   - "5672"  # AMQP
+   - "15672" # Admin UI
+  healthcheck:
+   test: "curl -f http://localhost:15672"
+   interval: 30s
+   timeout: 30s
+   retries: 10
+  volumes:
+   - type: volume
+     source: ~/temp/docker/data/log
+     target: /log
+
+ rmq-console:
+  build: rmq-console
+  container_name: rmq-console
+  hostname: rmq-console
+  depends_on:
+   - mq
+  volumes:
+   - consolemsgs:/msgs
+   - logs:/logs
+
+ py-service:
+  build: py-service
+  container_name: py-service
+  hostname: py-service
+  depends_on:
+   - mq
+  volumes:
+   - consolemsgs:/msgs
+   - logs:/logs
+
+ cpp-service:
+  build: cpp-service
+  container_name: cpp-service
+  hostname: cpp-service
+  depends_on:
+   - mq
+  volumes:
+   - type: volume
+     source: ~/temp/docker/data/log
+     target: /log
+
+volumes:
+ consolemsgs: {}
+ logs: {}

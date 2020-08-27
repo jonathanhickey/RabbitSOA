@@ -1,0 +1,11 @@
+
+// run mq
+$ docker run --rm -v ~/temp/docker/data/logs:/var/log/rabbitmq --name mq  -it --entrypoint /bin/bash rabbitsoa_mq
+$ docker run --rm --mount source=~/temp/docker/data/log,target=/log --name mq  -it --entrypoint /bin/bash rabbitsoa_mq
+
+// run py-service
+$ docker run --rm -v ~/temp/console/msgs:/msgs -v ~/temp/console/log:/log --network rabbitsoa_default --name rabbitsoa_py-service -it --entrypoint /bin/bash rabbitsoa_py-service
+
+// run rmq-console
+$ docker run --rm -v ~/temp/console/msgs:/msgs -v ~/temp/console/log:/log --network rabbitsoa_default --name rabbitsoa_rmq-console -it --entrypoint /bin/bash rabbitsoa_rmq-console
+s
