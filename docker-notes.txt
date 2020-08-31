@@ -8,4 +8,9 @@ $ docker run --rm -v ~/temp/console/msgs:/msgs -v ~/temp/console/log:/log --netw
 
 // run rmq-console
 $ docker run --rm -v ~/temp/console/msgs:/msgs -v ~/temp/console/log:/log --network rabbitsoa_default --name rabbitsoa_rmq-console -it --entrypoint /bin/bash rabbitsoa_rmq-console
-s
+
+// run docker-cpp-dev-base
+$ docker run --rm --name cppdev -it --entrypoint /bin/bash docker-cpp-dev-base
+
+// run cpp-service
+$ docker run --rm --network rabbitsoa_default --name rabbitsoa_cpp-service -it --entrypoint /bin/bash rabbitsoa_cpp-service

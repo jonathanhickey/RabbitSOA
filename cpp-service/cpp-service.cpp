@@ -1,4 +1,5 @@
-//#include "MQMarket.h"
+#include "mq.h"
+//class mq;
 #include "rsoa-example.pb.h"
 #include <SimpleAmqpClient/SimpleAmqpClient.h>
 #include <SimpleAmqpClient/AmqpLibraryException.h>
@@ -7,7 +8,7 @@
 #include <sstream>
 #include <unistd.h>
 
-//reactor::MQMarket* g_mqMarket;
+mq* g_mq;
 
 static std::string symbol;
 static std::string system_password;
@@ -41,10 +42,8 @@ int main()
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
     initSystemPassword();
-    if (!initSymbol())
-        return 0;
 
-//    g_mqMarket = new reactor::MQMarket(symbol, system_password);
-//    g_mqMarket->run();
+    g_mq = new mq(system_password);
+    g_mq->run();
 }
 

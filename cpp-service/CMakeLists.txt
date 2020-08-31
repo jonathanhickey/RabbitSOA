@@ -15,8 +15,9 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/proto)
 include_directories(${CMAKE_SOURCE_DIR}/SimpleAmqpCient-master/src)
 
 add_executable(cpp-service
-                cpp-service.cpp
-              )
+        cpp-service.cpp
+        mq.cpp
+        )
 
 message(STATUS "PROTOBUF_LIBRARY: " ${PROTOBUF_LIBRARY})
 
