@@ -1,8 +1,8 @@
 FROM docker-cpp-dev-base
 
-WORKDIR /build
-
-COPY ./ /build
+WORKDIR /cpp-service
+COPY ./cpp-service /cpp-service
+COPY ./proto /cpp-service/proto
 
 ENV CXX=/usr/bin/x86_64-linux-gnu-g++-7
 ENV CCFLAGS=--std=c++17

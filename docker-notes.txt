@@ -12,5 +12,8 @@ $ docker run --rm -v ~/temp/console/msgs:/msgs -v ~/temp/console/log:/log --netw
 // run docker-cpp-dev-base
 $ docker run --rm --name cppdev -it --entrypoint /bin/bash docker-cpp-dev-base
 
+// build cpp-service
+~/code/RabbitSOA [dev]$ docker build --no-cache -f cpp-service/Dockerfile -t rabbitsoa_cpp-service:latest .
+
 // run cpp-service
 $ docker run --rm --network rabbitsoa_default --name rabbitsoa_cpp-service -it --entrypoint /bin/bash rabbitsoa_cpp-service
