@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker run --rm -v ~/temp/console/msgs:/msgs -v ~/temp/console/log:/log --network rabbitsoa_default --name rabbitsoa_rmq-console -it --entrypoint /bin/bash rabbitsoa_rmq-console

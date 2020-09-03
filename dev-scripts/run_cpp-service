@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker run --rm --network rabbitsoa_default --name rabbitsoa_cpp-service -it --entrypoint /bin/bash rabbitsoa_cpp-service
+docker run --rm --network rabbitsoa_default --name rabbitsoa_cpp-service rabbitsoa_cpp-service
 

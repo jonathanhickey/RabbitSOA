@@ -15,7 +15,7 @@ WORKDIR /rmq-console
 COPY ./rmq-console /rmq-console
 COPY ./protobufs /rmq-console/protobufs
 
-RUN protoc --proto_path=protobufs --python_out=protobufs protobufs/rsoa-example.proto
+RUN protoc --proto_path=protobufs --python_out=protobufs protobufs/*.proto
 RUN pip install protobuf
 
-CMD ["/bin/bash"]
+CMD ["python", "console.py"]
