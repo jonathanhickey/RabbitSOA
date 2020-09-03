@@ -6,14 +6,23 @@ $ docker run --rm --mount source=~/temp/docker/data/log,target=/log --name mq  -
 // run py-service
 $ docker run --rm -v ~/temp/console/msgs:/msgs -v ~/temp/console/log:/log --network rabbitsoa_default --name rabbitsoa_py-service -it --entrypoint /bin/bash rabbitsoa_py-service
 
-// run rmq-console
-$ docker run --rm -v ~/temp/console/msgs:/msgs -v ~/temp/console/log:/log --network rabbitsoa_default --name rabbitsoa_rmq-console -it --entrypoint /bin/bash rabbitsoa_rmq-console
 
-// run docker-cpp-dev-base
+// build cpp-dev-base
+$ docker build -t docker-cpp-dev-base:latest cpp-dev-base
+
+// run cpp-dev-base (in order to look around)
 $ docker run --rm --name cppdev -it --entrypoint /bin/bash docker-cpp-dev-base
 
+
 // build cpp-service
-~/code/RabbitSOA [dev]$ docker build --no-cache -f cpp-service/Dockerfile -t rabbitsoa_cpp-service:latest .
+~/code/RabbitSOA [dev]$ docker build -f cpp-service/Dockerfile -t rabbitsoa_cpp-service:latest .
 
 // run cpp-service
 $ docker run --rm --network rabbitsoa_default --name rabbitsoa_cpp-service -it --entrypoint /bin/bash rabbitsoa_cpp-service
+
+
+// build rmq-console
+~/code/RabbitSOA [dev]$ docker build -f rmq-console/Dockerfile -t rabbitsoa_rmq-console:latest .
+
+// run rmq-console
+$ docker run --rm -v ~/temp/console/msgs:/msgs -v ~/temp/console/log:/log --network rabbitsoa_default --name rabbitsoa_rmq-console -it --entrypoint /bin/bash rabbitsoa_rmq-console

@@ -1,16 +1,26 @@
-from google.protobuf.message import Message
+import importlib
+import glob
 
-protobufs = {}
+compiled_pb2_list=glob.glob('protobufs/*_pb2.py')
 
-import rsoa_example_pb2
-protobufs['rsoa_example_pb2'] = [v for v in  vars(rsoa_example_pb2).values() if isinstance(v, type) and issubclass(v, Message)]
+def filename_to_importname(fn):
+    return fn[:-3].replace('/','.')
+
+def filename_to_fieldvalue(fn):
+    return fn[10:-7]
+
+protobuf_modules = {}
+for compiled_pb2 in compiled_pb2_list:
+    m = importlib.import_module(filename_to_importname(compiled_pb2))
+    protobuf_modules[filename_to_fieldvalue(compiled_pb2)] = m
 
 
 def find_protobuf(proto_file, name):
-    for pb in protobufs[proto_file]:
-        if pb.DESCRIPTOR.name == name:
-            return pb
-    return None
+    m = protobuf_modules.get(proto_file)
+    if not m:
+        return None
+    c = m.__dict__.get(name)
+    return c
 
 def find_oneof(pb, name):
     for f in pb.DESCRIPTOR.oneofs_by_name['msg'].fields:

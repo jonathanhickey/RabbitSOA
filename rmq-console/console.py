@@ -43,10 +43,9 @@ class MyPrompt(Cmd):
         return arg
 
     def do_store(self, rest):
-        '''stores a whole msg, overwriting what was there'''
+        '''stores a whole msg, overwriting what was there. e.g. store msg1 {'mqexchange': 'amq.topic', 'protoimport': 'rsoa_example_pb2', 'protobuf': 'ValueReq', 'id': 1 }'''
         # some examples:
         # store n4 {'mqexchange': 'amq.topic', 'clOrdID': 'aaa', 'sessionID': '1234', 'protobuf': 'Action', 'oneof': 'newOrder', 'price': 850, 'quantity': 100, 'orderType': 0, 'symbol': 'TEST1|TEST2', 'side': 1}
-        # store m1 {'protoimport': 'rsoa_example_pb2', 'protobuf': 'ValueReq', 'id': 1 }
         [msg_name, rest] = rest.split(maxsplit=1)
         content_dict = self.parse1(rest)
         self.store(msg_name, content_dict)
@@ -87,9 +86,8 @@ class MyPrompt(Cmd):
             pickle.dump(content_dict, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     def do_update(self, rest):
-        '''updates fields of a msg'''
+        '''updates fields of a msg. e.g. update n1 {'field1': 'newValue'}'''
         '''TODO: needs to validate by calling self.store()'''
-        # update n1 {'clOrdID': 'def'}
         [msg_name, rest] = rest.split(maxsplit=1)
         update_to_content_dict = self.parse1(rest)
         if not update_to_content_dict:
@@ -102,8 +100,7 @@ class MyPrompt(Cmd):
             pickle.dump(self.msgContents[msg_name], f, protocol=pickle.HIGHEST_PROTOCOL)
 
     def do_show(self, rest):
-        '''shows a msg'''
-        # show m2
+        '''shows a msg. e.g. show msg1'''
         tokens = rest.split()
         if len(tokens) != 1:
             print('show expects 1 argument, {0} given'.format(len(rest)-1))
@@ -116,9 +113,8 @@ class MyPrompt(Cmd):
             print('{0} does not exist'.format(msg_name))
 
     def do_remove(self, rest):
-        '''removes field from a msg'''
+        '''removes field from a msg. e.g. remove field1'''
         '''TODO: needs to validate by calling self.store()'''
-        # remove n1 clOrdID
         tokens = rest.split()
         if len(tokens) != 2:
             print('remove expects 2 arguments, {0} given'.format(len(tokens)))
@@ -133,8 +129,7 @@ class MyPrompt(Cmd):
             pickle.dump(self.msgContents[msg_name], f, protocol=pickle.HIGHEST_PROTOCOL)
 
     def do_delete(self, rest):
-        '''deletes a msg'''
-        # delete n1
+        '''deletes a msg. e.g. delete msg1'''
         tokens = rest.split()
         if len(tokens) != 1:
             print('delete expects 1 argument, {0} given'.format(len(rest)-1))
@@ -147,8 +142,7 @@ class MyPrompt(Cmd):
             print('{0} does not exist'.format(msg_name))
 
     def do_copy(self, rest):
-        '''copies a msg'''
-        # copy src dest
+        '''copies a msg. copy msg1 msg1_copy'''
         tokens = rest.split()
         if len(tokens) != 2:
             print('copy expects 2 arguments, {0} given'.format(len(tokens)))
@@ -166,13 +160,12 @@ class MyPrompt(Cmd):
         pass
 
     def do_msgs(self, rest):
-        '''shows all msgs'''
+        '''shows all msgs. e.g. msgs'''
         for msg_name, content_dict in self.msgContents.items():
             print('{0} {1}'.format(msg_name, content_dict))
 
     def do_send(self, rest):
-        '''sends a msg'''
-        # send n4
+        '''sends a msg. e.g. send msg1'''
         s = rest.split(maxsplit=1)
         if len(s) != 1:
             print('send expects exactly 1 argument')
