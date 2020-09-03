@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# from ~/code/RabbitSOA
+docker build -f rmq-console/Dockerfile -t rabbitsoa_rmq-console:latest .

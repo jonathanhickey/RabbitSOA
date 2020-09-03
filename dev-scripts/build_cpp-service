@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# from ~/code/RabbitSOA
+docker build -f cpp-service/Dockerfile -t rabbitsoa_cpp-service:latest .

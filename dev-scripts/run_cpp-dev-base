@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker run --rm --name cppdev -it --entrypoint /bin/bash docker-cpp-dev-base
