@@ -1,6 +1,5 @@
-#include "rsoa-example.pb.h"
+#include "protobufs/rsoa-example.pb.h"
 #include "mq.h"
-//#include <boost/algorithm/string.hpp>
 #include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 #include <iostream>
 #include <vector>

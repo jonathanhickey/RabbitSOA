@@ -1,6 +1,5 @@
 #include "mq.h"
-//class mq;
-#include "rsoa-example.pb.h"
+#include "protobufs/rsoa-example.pb.h"
 #include <SimpleAmqpClient/SimpleAmqpClient.h>
 #include <SimpleAmqpClient/AmqpLibraryException.h>
 #include <map>

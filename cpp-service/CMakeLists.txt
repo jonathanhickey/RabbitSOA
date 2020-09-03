@@ -9,8 +9,8 @@ find_package(Boost 1.65.0 REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIR})
 
-add_subdirectory(proto)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/proto)
+add_subdirectory(protobufs)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 include_directories(${CMAKE_SOURCE_DIR}/SimpleAmqpCient-master/src)
 
@@ -22,9 +22,10 @@ add_executable(cpp-service
 message(STATUS "PROTOBUF_LIBRARY: " ${PROTOBUF_LIBRARY})
 
 target_link_libraries(cpp-service
-                      proto
-                      SimpleAmqpClient
-                      ${PROTOBUF_LIBRARY}
-                      ${CMAKE_THREAD_LIBS_INIT}
-                     )
+        protobufs
+        SimpleAmqpClient
+        ${PROTOBUF_LIBRARY}
+        ${CMAKE_THREAD_LIBS_INIT}
+        )
 
+install(TARGETS cpp-service DESTINATION bin)
