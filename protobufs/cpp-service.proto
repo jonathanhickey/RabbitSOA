@@ -1,0 +1,32 @@
+syntax = "proto3";
+package cpp_service;
+
+// Request messages
+
+message SnapshotDataA
+{
+    uint32 id = 1;
+}
+
+message SubscribeDataA
+{
+    uint32 id = 1;
+}
+
+message Request
+{
+    oneof msg
+    {
+        SnapshotDataA snapshotDataA = 1;
+        SubscribeDataA subscribeDataA = 2;
+    }
+}
+
+
+// Response messages
+
+message DataA
+{
+    uint32 id = 1;
+    int32 value = 2;
+}

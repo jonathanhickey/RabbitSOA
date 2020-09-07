@@ -1,6 +1,5 @@
-#include "protobufs/rsoa-example.pb.h"
+#include "protobufs/cpp-service.pb.h"
 #include <SimpleAmqpClient/SimpleAmqpClient.h>
-#include <SimpleAmqpClient/AmqpLibraryException.h>
 #include <string>
 
 
@@ -12,12 +11,20 @@ public:
 
 private:
     AmqpClient::Channel::ptr_t connect();
-    void setupReactorctlExchange();
-    void handleReactorCtlMessage(std::string body);
+    void setupRSOAExchange();
+    std::string setupConsume(const std::string& exchange, const std::string& queue_name, const std::string& binding_key);
+    void handleValueReqMessage(const std::string& body);
+    void handleRequestMessage(const std::string& body);
+    void handleMessage(const cpp_service::SnapshotDataA& sd);
+    void handleMessage(const cpp_service::SubscribeDataA& sd);
 
-    std::string reactorctlExchangeName_ = "msgs";
     std::string system_password_;
     AmqpClient::Channel::ptr_t channel_;
-    std::string actionConsumerTag_;
-    std::string reactorctlConsumerTag_;
+    std::string rsoaExchangeName_ = "rsoa_exch";
+
+    std::string valueReqRoutingKey_ = "ValueReq";
+    std::string rsoaConsumerTag_;
+
+    std::string requestRoutingKey_ = "Request";
+    std::string requestConsumerTag_;
 };
