@@ -19,7 +19,7 @@ void mq::run()
     while (true)
     {
         AmqpClient::Envelope::ptr_t envelope;
-        if (channel_->BasicConsumeMessage(tags, envelope, -1))  // wait forever
+        if (channel_->BasicConsumeMessage(tags, envelope, 30000))  // 30 seconds
         {
             auto exchange = envelope->Exchange();
             auto routing_key = envelope->RoutingKey();
@@ -30,6 +30,10 @@ void mq::run()
                 else if (exchange == rsoaExchangeName_ && routing_key == requestRoutingKey_)
                     handleRequestMessage(envelope->Message()->Body());
             }
+        }
+        else
+        {
+            publishB();
         }
     }
 }
@@ -102,8 +106,8 @@ void mq::handleRequestMessage(const std::string& body)
     request.ParseFromZeroCopyStream(&ais);
     if (request.has_snapshotdataa())
         handleMessage(request.snapshotdataa());
-    else if (request.has_subscribedataa())
-        handleMessage(request.subscribedataa());
+    else if (request.has_subscribedatab())
+        handleMessage(request.subscribedatab());
     else
         std::cout << "got an unknown cpp_service::Request" << std::endl;
 }
@@ -121,14 +125,39 @@ void mq::handleMessage(const cpp_service::SnapshotDataA& sd)
     dataA.SerializeToString(&ss);
     auto msg = AmqpClient::BasicMessage::Create(ss);
     std::string routing_key = "DataA";
-    std::cout << "publish SnapshotDataA"
+    std::cout << "publish DataA"
               << " to exchange '" << rsoaExchangeName_
               << "' with routing_key '" << routing_key << "'" << std::endl;
     channel_->BasicPublish(rsoaExchangeName_, routing_key, msg);
 }
 
-void mq::handleMessage(const cpp_service::SubscribeDataA& sd)
+void mq::handleMessage(const cpp_service::SubscribeDataB& sd)
 {
     int32_t id = sd.id();
-    std::cout << "got cpp_service::SubscribeDataA, id: " << id << std::endl;
+    std::cout << "got cpp_service::SubscribeDataB, id: " << id << std::endl;
+    publishB_ = true;
+}
+
+void mq::publishB()
+{
+    if (!publishB_)
+        return;
+
+    const int id = 4;
+    static int ivalue = 0;
+    std::string svalue{"dummmy"};
+
+    cpp_service::DataB dataB;
+    dataB.set_id(id);
+    dataB.set_ivalue(++ivalue);
+    dataB.set_svalue(svalue);
+
+    std::string ss;
+    dataB.SerializeToString(&ss);
+    auto msg = AmqpClient::BasicMessage::Create(ss);
+    std::string routing_key = "DataB";
+    std::cout << "publish DataB"
+              << " to exchange '" << rsoaExchangeName_
+              << "' with routing_key '" << routing_key << "'" << std::endl;
+    channel_->BasicPublish(rsoaExchangeName_, routing_key, msg);
 }

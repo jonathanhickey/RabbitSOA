@@ -16,7 +16,8 @@ private:
     void handleValueReqMessage(const std::string& body);
     void handleRequestMessage(const std::string& body);
     void handleMessage(const cpp_service::SnapshotDataA& sd);
-    void handleMessage(const cpp_service::SubscribeDataA& sd);
+    void handleMessage(const cpp_service::SubscribeDataB& sd);
+    void publishB();
 
     std::string system_password_;
     AmqpClient::Channel::ptr_t channel_;
@@ -27,4 +28,6 @@ private:
 
     std::string requestRoutingKey_ = "Request";
     std::string requestConsumerTag_;
+
+    bool publishB_ = false;
 };

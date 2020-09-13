@@ -14,3 +14,10 @@ async def handle_DataA(self, channel, body, envelope, properties):
     #     'value': dataA.value
     # }
     # self.console_conn.send(pickle.dumps(data_a_dict))
+
+async def handle_DataB(self, channel, body, envelope, properties):
+    data_b = cpp_service_pb2.DataB()
+    data_b.ParseFromString(body)
+    self.log.info('{0}>: DataB routing key: {1}, id:{2}, ivalue: {3}, svalue: {4}'.format(
+        envelope.exchange_name, envelope.routing_key,
+        data_b.id, data_b.ivalue, data_b.svalue))

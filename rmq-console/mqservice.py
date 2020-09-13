@@ -63,7 +63,8 @@ class MQService():
                 setattr(self, handler.__name__, types.MethodType(handler, self)) # add the handler to our instance
                 self.log.info('declaring queue {0}'.format(queue_name))
                 await self.channel.queue_declare(queue_name=queue_name, durable=queue['durable'])
-                self.log.info('binding queue {0} to exchange {1} with routing key {2}'.format(queue_name, exchange_name, routing_key))
+                self.log.info('binding queue {0} to exchange {1} with routing key {2}, handler {3}'.format(
+                    queue_name, exchange_name, routing_key, handler.__name__))
                 await self.channel.queue_bind(queue_name=queue_name, exchange_name=exchange_name, routing_key=routing_key)
                 await self.channel.basic_consume(getattr(self, handler.__name__), queue_name=queue_name, no_ack=True)
 

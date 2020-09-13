@@ -13,6 +13,12 @@ exchanges = [
                 'durable': False,
                 'routing_key': 'DataA',
                 'handler': handlers.handle_DataA
+            },
+            {
+                'name': 'dataB',
+                'durable': False,
+                'routing_key': 'DataB',
+                'handler': handlers.handle_DataB
             }
         ]
     }
