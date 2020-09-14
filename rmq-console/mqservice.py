@@ -1,15 +1,16 @@
 import asyncio
 import aioamqp
-import exchange_config
 import pickle
 import types
 from os.path import join
 import protobuf_utils
 import logging
+import importlib
 
 
 class MQService():
-    def __init__(self, conn):
+    def __init__(self, conn, exch_conf_filename):
+        self.exchange_config = importlib.import_module(exch_conf_filename)
         self.console_conn = conn
         self.loop = asyncio.get_event_loop()
         self.log_dir = '/log'
@@ -46,7 +47,7 @@ class MQService():
 
         self.channel = await self.protocol.channel()
 
-        for exchange in exchange_config.exchanges:
+        for exchange in self.exchange_config.exchanges:
             await self.setup_exchange(exchange)
 
         self.log.info('finished connecting to MQ')
@@ -117,6 +118,6 @@ class MQService():
         self.loop.run_until_complete(asyncio.ensure_future(self.init()))
         self.loop.run_until_complete(asyncio.ensure_future(self.check_for_pickles_from_pipe()))
 
-def initializeMQService(conn):
-    svc = MQService(conn)
+def initializeMQService(conn, exch_conf_filename):
+    svc = MQService(conn, exch_conf_filename)
     svc.run()

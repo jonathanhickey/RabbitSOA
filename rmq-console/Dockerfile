@@ -18,4 +18,4 @@ COPY ./protobufs /rmq-console/protobufs
 RUN protoc --proto_path=protobufs --python_out=protobufs protobufs/*.proto
 RUN pip install protobuf
 
-CMD ["python", "console.py"]
+CMD ["python", "console.py", "exchange_config"]

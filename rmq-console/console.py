@@ -1,5 +1,4 @@
 import protobuf_utils
-import exchange_config
 from mqservice import initializeMQService
 from cmd import Cmd
 from multiprocessing import Process, Pipe
@@ -8,6 +7,8 @@ from os.path import isfile, join
 import ast
 import copy
 import pickle
+import argparse
+import importlib
 
 class MyPrompt(Cmd):
     def __init__(self):
@@ -18,7 +19,7 @@ class MyPrompt(Cmd):
         self.msgContents = {}
 
         self.our_conn, their_conn = Pipe()
-        self.proc = Process(target=initializeMQService, args=(their_conn,))
+        self.proc = Process(target=initializeMQService, args=(their_conn, exch_conf_filename))
         self.proc.start()
         self.msg_dir = '/msgs'
         self.load_msgs()
@@ -218,6 +219,12 @@ class MyPrompt(Cmd):
             s = pickle.loads(b)
             print('{0}'.format(s))
 
+
+parser = argparse.ArgumentParser(description='Console for interacting with RabbitMQ using protobufs.')
+parser.add_argument('exch_conf', help='the config file for the exchange(s)')
+args = parser.parse_args()
+exch_conf_filename = args.exch_conf
+exchange_config = importlib.import_module(exch_conf_filename)
 
 prompt = MyPrompt()
 prompt.prompt = '> '
